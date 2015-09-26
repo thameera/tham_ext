@@ -14,6 +14,12 @@
   "options_ui": {
     "page": "options.html",
     "chrome_style": true
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://twitter.com/*"],
+      "js": ["lib/jquery-2.1.4.min.js", "content_scripts/twitter.js"]
+    }
+  ]
 }
 
