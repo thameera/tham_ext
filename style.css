@@ -1,0 +1,26 @@
+body {
+  width: 400px;
+}
+
+.no-padding {
+  padding: 0px;
+}
+
+.almost-no-padding {
+  padding: 2px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+input, button {
+  font-size: 12px !important;
+}
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+

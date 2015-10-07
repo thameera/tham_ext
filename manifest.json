@@ -4,7 +4,8 @@
   "manifest_version": 2,
   "description": "Thameera's Utilities",
   "permissions": [
-    "storage"
+    "storage",
+    "tabs"
   ],
   "browser_action": {
     "default_icon": "img/icon.png",
@@ -19,6 +20,10 @@
     {
       "matches": ["https://twitter.com/*"],
       "js": ["lib/jquery-2.1.4.min.js", "content_scripts/twitter.js"]
+    },
+    {
+      "matches": ["https://222.229.226.165/redmine/*"],
+      "js": ["lib/jquery-2.1.4.min.js", "content_scripts/redmine.js"]
     }
   ]
 }
