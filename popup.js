@@ -56,10 +56,19 @@ $(function() {
 
 
   /*
-   * Redmine copy buttons
+   * Redmine buttons
    */
-  $('.copy-btn').click(function(e) {
+  $('#redmine .copy-btn').click(function(e) {
     $(e.target).parent().parent().find('input').select();
+    document.execCommand('copy');
+  });
+
+  $('#redmine #clipboard-btn').click(function() {
+    $('#redmine-top').select();
+    document.execCommand('paste');
+    $('#redmine-middle').val( redmine.convertUrl( $('#redmine-top').val() ) );
+    $('#redmine-bottom').val('');
+    $('#redmine-middle').select();
     document.execCommand('copy');
   });
 
