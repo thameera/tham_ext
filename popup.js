@@ -63,18 +63,24 @@ $(function() {
   }; // redmine
 
 
+  /*
+   * Twitter-related functions
+   */
   var twitter = {
 
     onTab: function( tab ) {
 
+      // Prepare tweet-able text
       var text = tab.title + ' ' + tab.url;
       $('#tweet').val( text );
 
+      // Copy button
       $('#twitter #copy-btn').click(function() {
         $('#tweet').select();
         document.execCommand('copy');
       });
 
+      // Tweet button
       $('#twitter #tweet-btn').click(function() {
         var url = 'https://twitter.com/intent/tweet?text='
           + encodeURIComponent( text );
@@ -87,7 +93,7 @@ $(function() {
 
 
   /*
-   * At the beginning, query what kind of page we're currently in
+   * Get the current tab and trigger relevant methods
    */
   chrome.tabs.query({ currentWindow: true, active: true }, function(tabs) {
     if( !tabs || !tabs.length )
