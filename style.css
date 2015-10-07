@@ -14,7 +14,7 @@ body {
   width: 100%;
 }
 
-input, button {
+input, button, textarea {
   font-size: 12px !important;
 }
 

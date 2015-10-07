@@ -60,6 +60,29 @@ $(function() {
   }; // redmine
 
 
+  var twitter = {
+
+    onTab: function( tab ) {
+
+      var text = tab.title + ' ' + tab.url;
+      $('#tweet').val( text );
+
+      $('#twitter #copy-btn').click(function() {
+        $('#tweet').select();
+        document.execCommand('copy');
+      });
+
+      $('#twitter #tweet-btn').click(function() {
+        var url = 'https://twitter.com/intent/tweet?text='
+          + encodeURIComponent( text );
+        chrome.tabs.create({ url: url });
+      });
+
+    }
+
+  };
+
+
   /*
    * At the beginning, query what kind of page we're currently in
    */
@@ -72,6 +95,9 @@ $(function() {
     // Redmine
     if( tab.url.startsWith( 'https://222.229.226.165/redmine' ) )
       redmine.onTab( tab );
+
+    // All tabs
+    twitter.onTab( tab );
   });
 
 
