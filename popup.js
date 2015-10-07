@@ -28,6 +28,9 @@ $(function() {
 
     onTab: function( tab ) {
 
+      if( ! tab.url.startsWith( 'https://222.229.226.165/redmine' ) )
+        return;
+
       chrome.tabs.sendMessage( tab.id, {method: 'getFormattedRedmineTitle'}, function( response ) {
         $('#redmine-bottom').val( response );
       });
@@ -92,11 +95,7 @@ $(function() {
 
     var tab = tabs[0];
 
-    // Redmine
-    if( tab.url.startsWith( 'https://222.229.226.165/redmine' ) )
-      redmine.onTab( tab );
-
-    // All tabs
+    redmine.onTab( tab );
     twitter.onTab( tab );
   });
 
