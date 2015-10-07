@@ -35,6 +35,26 @@ $(function() {
       $('#redmine-top').val( tab.url );
       $('#redmine-middle').val( redmine.convertUrl( tab.url ) );
 
+    },
+
+    registerButtonActions: function() {
+
+      // Copy buttons
+      $('#redmine .copy-btn').click(function(e) {
+        $(e.target).parent().parent().find('input').select();
+        document.execCommand('copy');
+      });
+
+      // Clipboard button
+      $('#redmine #clipboard-btn').click(function() {
+        $('#redmine-top').select();
+        document.execCommand('paste');
+        $('#redmine-middle').val( redmine.convertUrl( $('#redmine-top').val() ) );
+        $('#redmine-bottom').val('');
+        $('#redmine-middle').select();
+        document.execCommand('copy');
+      });
+
     }
 
   }; // redmine
@@ -55,22 +75,7 @@ $(function() {
   });
 
 
-  /*
-   * Redmine buttons
-   */
-  $('#redmine .copy-btn').click(function(e) {
-    $(e.target).parent().parent().find('input').select();
-    document.execCommand('copy');
-  });
-
-  $('#redmine #clipboard-btn').click(function() {
-    $('#redmine-top').select();
-    document.execCommand('paste');
-    $('#redmine-middle').val( redmine.convertUrl( $('#redmine-top').val() ) );
-    $('#redmine-bottom').val('');
-    $('#redmine-middle').select();
-    document.execCommand('copy');
-  });
+  redmine.registerButtonActions();
 
 });
 
