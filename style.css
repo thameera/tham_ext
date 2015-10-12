@@ -1,5 +1,6 @@
 body {
   width: 400px;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 .no-padding {
@@ -22,5 +23,9 @@ input, button, textarea {
     display: inline-block;
     vertical-align: middle;
     float: none;
+}
+
+.section .title {
+  font-weight: bold;
 }
 
