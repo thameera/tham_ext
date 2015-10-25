@@ -93,6 +93,40 @@ $(function() {
 
 
   /*
+   * Timer-related functions
+   */
+  var timer = {
+
+    init: function() {
+
+      var $elem = $('#timer');
+      var timer = chrome.extension.getBackgroundPage().timer;
+
+      var updateLabels = function() {
+        $elem.find('#start-button').text( timer.getNextActionStr() );
+        $elem.find('#timer-remaining').text( timer.getRemainingTimeStr() );
+      };
+
+      $elem.find('#time-remaining').hide();
+
+      $elem.find('#start-button').click(function() {
+        var time = Number( $elem.find('#timer-minutes').val() );
+        var msg = $elem.find('#timer-msg').val();
+        timer.startOrPause( time, msg );
+      });
+
+      $elem.find('#stop-button').click(function() {
+        timer.stop();
+      });
+
+      setInterval( updateLabels, 50 );
+
+    }
+
+  };
+
+
+  /*
    * Get the current tab and trigger relevant methods
    */
   chrome.tabs.query({ currentWindow: true, active: true }, function(tabs) {
@@ -107,6 +141,7 @@ $(function() {
 
 
   redmine.registerButtonActions();
+  timer.init();
 
 });
 

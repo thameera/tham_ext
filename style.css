@@ -29,3 +29,8 @@ input, button, textarea {
   font-weight: bold;
 }
 
+#timer #timer-remaining {
+  font-size: 12px;
+  font-weight: bold;
+}
+

@@ -16,3 +16,89 @@ chrome.tabs.onUpdated.addListener(function( tabId, changeInfo, tab ) {
   }
 });
 
+
+var timer = (function() {
+
+  var alarmTime = 0;
+  var timeAfterResume = 0;
+  var state = 'INIT';
+  var message = '';
+  var intervalID = null;
+
+  var showNotif = function() {
+    message = message || 'Times up!';
+    alert( message );
+  };
+
+  var checkTime = function() {
+    if( alarmTime > 0 && Date.now() > alarmTime ) {
+      stopAlarm();
+      showNotif();
+    }
+  };
+
+  var startAlarm = function( time ) {
+    alarmTime = Date.now() + time;
+    intervalID = setInterval( checkTime, 100 );
+    state = 'RUNNING';
+  };
+
+  var stopAlarm = function() {
+    clearInterval( intervalID );
+    alarmTime = 0;
+    state = 'INIT';
+  };
+
+  var doStartOrPause = function( mins, msg ) {
+
+    if( state === 'INIT' ) {
+      startAlarm( mins * 1000, msg ); // TODO change to minutes
+    }
+    else if( state === 'RUNNING' ) {
+      clearInterval( intervalID );
+      timeAfterResume = alarmTime - Date.now();
+      state = 'PAUSED';
+    }
+    else if( state === 'PAUSED' ) {
+      startAlarm( timeAfterResume );
+    }
+
+    if( msg ) message = msg;
+
+  };
+
+  return {
+    startOrPause: function( mins, msg ) {
+      doStartOrPause( mins, msg );
+    },
+
+    stop: function() {
+      stopAlarm();
+    },
+
+    getRemainingTimeStr: function() {
+      var time;
+      if( state === 'INIT' ) return '';
+
+      if( state === 'RUNNING' ) time = alarmTime - Date.now();
+      else if( state === 'PAUSED' ) time = timeAfterResume;
+
+      if( time < 0 ) time = 0;
+
+      time /= 1000;
+      var mins = Math.floor( time / 60 );
+      var secs = Math.floor( time - mins * 60 );
+
+      return '' + mins + ':' + secs;
+    },
+
+    getNextActionStr: function() {
+      if( state === 'INIT' ) return 'Start';
+      else if( state === 'RUNNING' ) return 'Pause';
+      else if( state === 'PAUSED' ) return 'Resume';
+    }
+
+  };
+
+})();
+
