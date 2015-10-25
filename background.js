@@ -27,7 +27,7 @@ var timer = (function() {
 
   var showNotif = function() {
     message = message || 'Times up!';
-    alert( message );
+    new Notification( message );
   };
 
   var checkTime = function() {
@@ -52,7 +52,7 @@ var timer = (function() {
   var doStartOrPause = function( mins, msg ) {
 
     if( state === 'INIT' ) {
-      startAlarm( mins * 1000, msg ); // TODO change to minutes
+      startAlarm( mins * 60 * 1000, msg );
     }
     else if( state === 'RUNNING' ) {
       clearInterval( intervalID );

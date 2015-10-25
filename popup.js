@@ -100,6 +100,9 @@ $(function() {
     init: function() {
 
       var $elem = $('#timer');
+      var $msg = $elem.find('#timer-msg');
+      var $minutes = $elem.find('#timer-minutes');
+
       var timer = chrome.extension.getBackgroundPage().timer;
 
       var updateLabels = function() {
@@ -107,11 +110,20 @@ $(function() {
         $elem.find('#timer-remaining').text( timer.getRemainingTimeStr() );
       };
 
-      $elem.find('#time-remaining').hide();
+      $msg.val( localStorage.getItem( 'timer-msg' ) || '' );
+      $minutes.val( localStorage.getItem( 'timer-minutes' ) || 5 );
+
+      $msg.change(function() {
+        localStorage.setItem( 'timer-msg', $msg.val() );
+      });
+
+      $minutes.change(function() {
+        localStorage.setItem( 'timer-minutes', $minutes.val() );
+      });
 
       $elem.find('#start-button').click(function() {
-        var time = Number( $elem.find('#timer-minutes').val() );
-        var msg = $elem.find('#timer-msg').val();
+        var time = Number( $minutes.val() );
+        var msg = $msg.val();
         timer.startOrPause( time, msg );
       });
 
