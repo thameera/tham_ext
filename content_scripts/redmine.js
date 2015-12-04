@@ -23,7 +23,7 @@ $(function() {
 
   // Remove Feature/Defect/Support prefixes from title
   var title = $('title').text();
-  $('title').text( title.replace( /^Feature |Defect |Support /, '' ) );
+  $('title').text( title.replace( /^Feature |Defect |Support |Question /, '' ) );
 
 });
 
