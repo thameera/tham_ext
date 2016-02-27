@@ -30,6 +30,7 @@ $(function() {
   addLink($ol, 'close', '/thameera/lists/close-ones');
   addLink($ol, 'chomp', '/thameera/lists/chomp');
   addLink($ol, 'tech-sl', '/thameera/lists/tech-sl');
+  addLink($ol, 'cajunga', '/thameera/lists/cajunga');
   addLink($ol, 'me', '/thameera');
 
   // Make the links a bit closer (original padding: 0 14px 0 4px)
