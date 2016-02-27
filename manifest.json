@@ -8,7 +8,8 @@
     "clipboardWrite",
     "notifications",
     "storage",
-    "tabs"
+    "tabs",
+    "https://www.googleapis.com/*"
   ],
   "browser_action": {
     "default_icon": "img/icon.png",

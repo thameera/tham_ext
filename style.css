@@ -34,3 +34,10 @@ input, button, textarea {
   font-weight: bold;
 }
 
+.hidden {
+  display: none;
+}
+
+.error-label {
+  color: red;
+}
