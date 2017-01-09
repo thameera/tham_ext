@@ -1,11 +1,14 @@
 $(function() {
 
   var getFormattedTitle = function() {
+    var project = $('#project_quick_jump_box').find(":selected").text().substring(4);
+    var title = project;
+
     var c = $('#content');
     var h2 = c.find('h2');
     if( !h2.length ) return '';
 
-    var title = h2[0].innerText;
+    title += ': ' + h2[0].innerText;
 
     var h3 = c.find('.subject h3');
     if( !h3.length ) return '';
