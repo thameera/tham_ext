@@ -3,7 +3,7 @@
 chrome.tabs.onUpdated.addListener(function( tabId, changeInfo, tab ) {
   var queryStringIndex = tab.url.indexOf( '?' );
 
-  if( tab.url.indexOf('buzzfeed.com') < queryStringIndex ) return;
+  if( tab.url.indexOf('buzzfeed.com') > -1 ) return;
 
   if( tab.url.indexOf('utm_') > queryStringIndex ) {
     var stripped = tab.url.replace(
