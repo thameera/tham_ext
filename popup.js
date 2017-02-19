@@ -82,6 +82,7 @@ $(function() {
 
       // Tweet button
       $('#twitter #tweet-btn').click(function() {
+        text = $('#tweet').val();
         var url = 'https://twitter.com/intent/tweet?text='
           + encodeURIComponent( text );
         chrome.tabs.create({ url: url });
