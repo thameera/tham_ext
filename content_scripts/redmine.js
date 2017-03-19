@@ -18,9 +18,31 @@ $(function() {
     return title;
   };
 
+  const getRevisions = () => {
+     // [^\/] is used to drop false positives like http://svn/dav/test/r10223/testdata/
+    const regex = /[^\/]r\d\d\d\d\d/gi;
+    const commentText = $('.has-notes .wiki').text();
+    const revisions = [];
+    let result;
+
+    while( result = regex.exec(commentText) ) {
+      let revStr = '';
+      let id = result.index + 2;
+
+      while( commentText[id] >= '0' && commentText[id] <= '9' ) {
+        revStr += commentText[id++];
+      }
+      revisions.push(revStr);
+    }
+
+    return revisions;
+  }
+
   chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     if( request.method === 'getFormattedRedmineTitle' ) {
       sendResponse( getFormattedTitle() );
+    } else if( request.method === 'getRedmineRevisions' ) {
+      sendResponse( getRevisions() );
     }
   });
 

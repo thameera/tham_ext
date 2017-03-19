@@ -41,3 +41,7 @@ input, button, textarea {
 .error-label {
   color: red;
 }
+
+#redmine #revisions-placeholder {
+  height: 35px;
+}
