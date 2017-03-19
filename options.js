@@ -1,12 +1,23 @@
 $(function() {
 
-  var shortenerInput = $('#shortener-key');
+  const shortenerInput = $('#shortener-key');
+  const savedText = $('#options-saved');
 
   $('#save-btn').click(function() {
-    localStorage.setItem( 'shortener-key', shortenerInput.val() );
+    chrome.storage.sync.set({
+      shortenerKey: shortenerInput.val()
+    }, () => {
+      savedText.show();
+      setTimeout(() => {
+        savedText.hide();
+      }, 1500);
+    })
   });
 
-  var currentKey = localStorage.getItem( 'shortener-key' ) || '';
-  shortenerInput.val( currentKey );
+  chrome.storage.sync.get({
+    shortenerKey: ''
+  }, opts => {
+    shortenerInput.val( opts['shortenerKey'] );
+  });
 
 });

@@ -45,3 +45,8 @@ input, button, textarea {
 #redmine #revisions-placeholder {
   height: 35px;
 }
+
+#options-saved {
+  display: none;
+  color: green;
+}

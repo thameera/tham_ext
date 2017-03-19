@@ -167,34 +167,37 @@ $(function() {
     onTab: function( tab ) {
       var $input = $('#shortener-text');
       var $btn = $('#shorten-btn');
-      var key = localStorage.getItem('shortener-key') || '';
-
       $input.val( tab.url );
 
-      if (!key || key === '') {
-        $input.prop('disabled', true);
-        $btn.prop('disabled', true);
-        this.showError('Please provide goo.gl API key in options');
-        return;
-      }
+      chrome.storage.sync.get({
+        shortenerKey: ''
+      }, (items) => {
+        if( items.shortenerKey === '' ) {
+          $input.prop('disabled', true);
+          $btn.prop('disabled', true);
+          this.showError('Please provide goo.gl API key in options');
+          return;
+        }
 
-      $input.prop('disabled', false);
-      $btn.prop('disabled', false);
-      this.hideError();
+        $input.prop('disabled', false);
+        $btn.prop('disabled', false);
+        this.hideError();
 
-      $btn.click(function() {
-        $.ajax({
-          url: 'https://www.googleapis.com/urlshortener/v1/url?key=' + key,
-          method: 'POST',
-          data: JSON.stringify({'longUrl': $input.val()}),
-          contentType: 'application/json',
-          success: function(obj) {
-            $input.val( obj.id );
-            $input.select();
-            document.execCommand('copy');
-          }
+        $btn.click(function() {
+          $.ajax({
+            url: 'https://www.googleapis.com/urlshortener/v1/url?key=' + items.shortenerKey,
+            method: 'POST',
+            data: JSON.stringify({'longUrl': $input.val()}),
+            contentType: 'application/json',
+            success: function(obj) {
+              $input.val( obj.id );
+              $input.select();
+              document.execCommand('copy');
+            }
+          });
         });
       });
+
     }
 
   };
