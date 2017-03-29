@@ -18,10 +18,12 @@ $(function() {
     return title;
   };
 
-  const getRevisions = () => {
+  /*
+   * Extracts revisions from comment text using a regex
+   */
+  const getRevsFromRegex = (commentText) => {
      // [^\/] is used to drop false positives like http://svn/dav/test/r10223/testdata/
     const regex = /[^\/]r\d\d\d\d\d/gi;
-    const commentText = $('.has-notes .wiki').text();
     const revisions = [];
     let result;
 
@@ -36,12 +38,16 @@ $(function() {
     }
 
     return revisions;
-  }
+  };
 
+  /*
+   * Given a redmine note, extracts all revisions from it
+   */
   const extractRevsFromNote = ($note) => {
     const revisions = [];
     let result;
 
+    // Get revisions using changeset URLs
     $note.find('.changeset').each(function() {
       const reg = /\d+/;
       const text = $(this).text();
@@ -50,9 +56,21 @@ $(function() {
       revisions.push({ rev, link });
     });
 
+    // Get revisions using regex
+    const regexRevs = getRevsFromRegex($note.text());
+    regexRevs.forEach(regRev => {
+      // If there are any revisions that were not linked, add them to array
+      if( ! revisions.find( r => r.rev === regRev )) {
+        revisions.push({ rev: regRev, link: '' });
+      }
+    });
+
     return revisions;
   };
 
+  /*
+   * Get all revisions mentioned in ticket
+   */
   const getRevs = () => {
     const revisions = [];
     const notes = $('.has-notes .wiki');
