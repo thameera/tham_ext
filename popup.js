@@ -35,11 +35,6 @@ $(function() {
         $('#redmine-bottom').val( response );
       });
 
-      chrome.tabs.sendMessage( tab.id, {method: 'getRedmineRevisions'}, ( response ) => {
-        console.log(response);
-        $('#revisions-placeholder').val( uniq(response).join( '\n' ) );
-      });
-
       $('#redmine-top').val( tab.url );
       $('#redmine-middle').val( redmine.convertUrl( tab.url ) );
 
@@ -63,11 +58,6 @@ $(function() {
         document.execCommand('copy');
       });
 
-      // Copy revisions
-      $('#redmine #revisions-btn').click(() => {
-        $('#redmine #revisions-placeholder').select();
-        document.execCommand('copy');
-      })
     }
 
   }; // redmine

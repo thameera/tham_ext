@@ -76,7 +76,6 @@ $(function() {
       });
     });
 
-    console.log(revisions);
     return revisions;
   };
 
@@ -116,8 +115,6 @@ $(function() {
   chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     if( request.method === 'getFormattedRedmineTitle' ) {
       sendResponse( getFormattedTitle() );
-    } else if( request.method === 'getRedmineRevisions' ) {
-      sendResponse( getRevisions() );
     }
   });
 
