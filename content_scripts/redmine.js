@@ -38,11 +38,21 @@ $(function() {
     return revisions;
   }
 
-  var showAbsoluteDates = () => {
+  // Left-pad two digits
+  const pad = (n) => ('0' + n).substr(-2);
+
+  const formatDate = (dateStr) => {
+    const d = new Date(dateStr);
+    const date = `${d.getYear()+1900}/${pad(d.getMonth()+1)}/${pad(d.getDate())}`;
+    const time = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    return `${date} ${time}`;
+  };
+
+  const showAbsoluteDates = () => {
     const relativeDates = $('h4 a:nth-child(3)');
     relativeDates.each(function() {
       const absDate = $(this).attr('title');
-      $(this).parent().append($(`<span style="font-weight: normal">(${absDate})</span>`));
+      $(this).parent().append($(`<span style="font-weight: normal">(${formatDate(absDate)})</span>`));
     });
   };
 
