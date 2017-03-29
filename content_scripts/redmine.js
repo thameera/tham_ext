@@ -38,6 +38,14 @@ $(function() {
     return revisions;
   }
 
+  var showAbsoluteDates = () => {
+    const relativeDates = $('h4 a:nth-child(3)');
+    relativeDates.each(function() {
+      const absDate = $(this).attr('title');
+      $(this).parent().append($(`<span style="font-weight: normal">(${absDate})</span>`));
+    });
+  };
+
   chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     if( request.method === 'getFormattedRedmineTitle' ) {
       sendResponse( getFormattedTitle() );
@@ -49,6 +57,8 @@ $(function() {
   // Remove Feature/Defect/Support prefixes from title
   var title = $('title').text();
   $('title').text( title.replace( /^Feature |Defect |Support |Question /, '' ) );
+
+  showAbsoluteDates();
 
 });
 
