@@ -38,6 +38,63 @@ $(function() {
     return revisions;
   }
 
+  const extractRevsFromNote = ($note) => {
+    const revisions = [];
+    let result;
+
+    $note.find('.changeset').each(function() {
+      const reg = /\d+/;
+      const text = $(this).text();
+      const rev = reg.exec(text)[0];
+      const link = $(this).attr('href');
+      revisions.push({ rev, link });
+    });
+
+    return revisions;
+  };
+
+  const getRevs = () => {
+    const revisions = [];
+    const notes = $('.has-notes .wiki');
+
+    notes.each(function() {
+      const $this = $(this);
+      const noteRevs = extractRevsFromNote($this);
+      const $noteLink = $($this.parent().find('.journal-link')[0]);
+      const noteId = $noteLink.text();
+      const noteLink = $noteLink.attr('href');
+
+      noteRevs.forEach(nr => {
+        const previouslyFound = revisions.find(r => r.rev === nr.rev);
+        if( previouslyFound ) return;
+        revisions.push({
+          rev: nr.rev,
+          link: nr.link,
+          noteId,
+          noteLink
+        });
+      });
+    });
+
+    console.log(revisions);
+    return revisions;
+  };
+
+  const showRevsInSidebar = () => {
+    const revs = getRevs();
+    const $ul = $('<ul>');
+    revs.forEach(r => {
+      const $li = $(`<li><a href="${r.link}">${r.rev}</a> (<a href="${r.noteLink}">${r.noteId}</a>)</li>`);
+      $ul.append($li);
+    });
+
+    const $title = $('<h3>Revisions</h3>');
+    const $div = $('<div id="revisions">');
+    $div.append($title);
+    $div.append($ul);
+    $('#sidebar').append($div);
+  };
+
   // Left-pad two digits
   const pad = (n) => ('0' + n).substr(-2);
 
@@ -69,6 +126,7 @@ $(function() {
   $('title').text( title.replace( /^Feature |Defect |Support |Question /, '' ) );
 
   showAbsoluteDates();
+  showRevsInSidebar();
 
 });
 
