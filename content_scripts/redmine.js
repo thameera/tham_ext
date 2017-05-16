@@ -1,19 +1,24 @@
 $(function() {
 
   var getFormattedTitle = function() {
-    var project = $('#project_quick_jump_box').find(":selected").text().substring(4);
-    var title = project;
-
     var c = $('#content');
+
+    // Ticket number
     var h2 = c.find('h2');
     if( !h2.length ) return '';
 
-    title += ': ' + h2[0].innerText;
+    var headerText = h2[0].innerText; // eg: "Defect #9917"
+    var title = headerText.split(' ')[1]; // eg: #9917
 
+    // Title
     var h3 = c.find('.subject h3');
     if( !h3.length ) return '';
 
     title += ': ' + h3[0].innerText;
+
+    // Project
+    var project = $('#project_quick_jump_box').find(":selected").text().substring(4);
+    title += ' [H: ' + project + ']';
 
     return title;
   };
