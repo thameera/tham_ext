@@ -183,7 +183,7 @@ $(function() {
     };
 
     const origTarget = getText( 'td.fixed-version' );
-    const target = origTarget.substr( origTarget.indexOf(' - ') + 3);
+    const target = origTarget.indexOf(' - ') > -1 ? origTarget.substr( origTarget.indexOf(' - ') + 3) : origTarget;
     compare( 'Target version', target, getSelect( 'select#issue_fixed_version_id' ) );
 
     if( $div.children().length === 0 ){
