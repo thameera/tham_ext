@@ -135,6 +135,72 @@ $(function() {
     });
   };
 
+
+  const showDiff = ()=> {
+    $( '#view-diff' ).remove();
+
+    const $fieldset = $( `<fieldset id='view-diff' class='tabular'><legend>Diff</legend>` );
+    const $div = $( `<div>` );
+
+    const compare = ( label, orig, latest, compFn ) => {
+      orig = orig.trim();
+      latest = latest.trim();
+      if( !compFn ) {
+        if( orig !== latest ) {
+          $div.append( $( `<p><label>${label}</label> : ${latest} ( ${orig} )</p>` ) );
+        }
+      } else {
+        if ( !compFn( orig, latest ) ) {
+          $div.append( $( `<p><label>${label}</label> : ${latest} ( ${orig} )</p>` ) );
+        }
+      }
+    };
+
+    const getText = q => $(q).text();
+    const getVal = q => $(q).val();
+    const getSelect = q => $(q).find( ':selected' ).text();
+    const fmtDate = date => {
+      if (!date) return '';
+
+      const dateSplit = date.split( '/' );
+      return `${dateSplit[2]}-${dateSplit[0]}-${dateSplit[1]}`;
+    };
+    
+    compare( 'Project', getText( 'h1' ), getSelect( '#issue_project_id' ), ( o, l ) => o.endsWith( l ) );
+    compare( 'Tracker', getText( 'h2' ).split(' ')[0], getSelect( '#issue_tracker_id' ) );
+    compare( 'Subject', getText( '.subject h3' ), getVal( 'input#issue_subject' ) );
+    compare( 'Priority', getText( 'td.priority' ), getSelect( 'select#issue_priority_id' ) );
+    compare( 'Assignee', getText( 'td.assigned-to a' ), getSelect( 'select#issue_assigned_to_id' ) );
+    compare( 'Category', getText( 'td.category' ).replace( '-', '' ),getSelect( 'select#issue_category_id' ) );
+    compare( 'Reviewer', getText( 'td.cf_11 a.user.active' ), getSelect( 'select#issue_custom_field_values_11.user_cf' ) );
+    compare( 'Start date', fmtDate( getText( 'td.start-date' ) ), getVal( 'input#issue_start_date' ) );
+    compare( 'Due date', fmtDate( getText( 'td.due-date' ) ), getVal( 'input#issue_due_date' ) );
+    compare( 'Estimated time', getText( 'td.estimated-hours' ).split(' ')[0], getVal( 'input#issue_estimated_hours' ), ( o, l ) => Number( o ) === Number( l ) );
+    compare( '% Done', getText( 'p.percent' ), getSelect( 'select#issue_done_ratio' ).replace( ' ', '' ) );
+    
+    if ( $( 'select#issue_status_id' ).is( ":visible" ) ) {
+      compare( 'Status', getText( 'table.attributes td.status' ), getSelect( 'select#issue_status_id' ) );
+    };
+
+    const origTarget = getText( 'td.fixed-version' );
+    const target = origTarget.substr( origTarget.indexOf(' - ') + 3);
+    compare( 'Target version', target, getSelect( 'select#issue_fixed_version_id' ) );
+
+    if( $div.children().length === 0 ){
+      $div.append( `<p><em>No diff</em></p>` );
+    }
+
+    $fieldset.append( $div );
+    $( '#issue-form' ).append( $fieldset );
+  };
+
+
+  const addDiffBtn = () => {
+    const $btnDiff = $( `<input id="btn-diff" type = "button" value="Diff">` );
+    $('#issue-form').append( $btnDiff );
+    $btnDiff.click( showDiff );
+  };
+
   chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
     if( request.method === 'getFormattedRedmineTitle' ) {
       sendResponse( getFormattedTitle() );
@@ -147,6 +213,7 @@ $(function() {
 
   showAbsoluteDates();
   showRevsInSidebar();
+  addDiffBtn(); 
 
 });
 
