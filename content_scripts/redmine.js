@@ -139,7 +139,7 @@ $(function() {
   const showDiff = ()=> {
     $( '#view-diff' ).remove();
 
-    const $fieldset = $( `<fieldset class='tabular'><legend>Diff</legend>` );
+    const $fieldset = $( `<fieldset id='view-diff' class='tabular'><legend>Diff</legend>` );
     const $div = $( `<div>` );
 
     const compare = ( label, orig, latest, compFn ) => {
@@ -147,11 +147,11 @@ $(function() {
       latest = latest.trim();
       if( !compFn ) {
         if( orig !== latest ) {
-          $div.append( $( `<p><label>${ label }</label> : ${ latest } ( ${ orig })</p>` ) );
+          $div.append( $( `<p><label>${label}</label> : ${latest} ( ${orig} )</p>` ) );
         }
       } else {
         if ( !compFn( orig, latest ) ) {
-          $div.append( $( `<p><label>${ label }</label> : ${ latest } ( ${ orig } )</p>` ) );
+          $div.append( $( `<p><label>${label}</label> : ${latest} ( ${orig} )</p>` ) );
         }
       }
     };
@@ -167,12 +167,11 @@ $(function() {
     };
     
     compare( 'Project', getText( 'h1' ), getSelect( '#issue_project_id' ), ( o, l ) => o.endsWith( l ) );
-    compare( 'Tracker', getText( 'h2' ), getSelect( '#issue_tracker_id' ), ( o, l ) => o.startsWith( l ) );
+    compare( 'Tracker', getText( 'h2' ).split(' ')[0], getSelect( '#issue_tracker_id' ) );
     compare( 'Subject', getText( '.subject h3' ), getVal( 'input#issue_subject' ) );
     compare( 'Priority', getText( 'td.priority' ), getSelect( 'select#issue_priority_id' ) );
     compare( 'Assignee', getText( 'td.assigned-to a' ), getSelect( 'select#issue_assigned_to_id' ) );
     compare( 'Category', getText( 'td.category' ).replace( '-', '' ),getSelect( 'select#issue_category_id' ) );
-    compare( 'Target version', getText( 'td.fixed-version' ), getSelect( 'select#issue_fixed_version_id' ), ( o, l ) => o.endsWith( l ));
     compare( 'Reviewer', getText( 'td.cf_11 a.user.active' ), getSelect( 'select#issue_custom_field_values_11.user_cf' ) );
     compare( 'Start date', fmtDate( getText( 'td.start-date' ) ), getVal( 'input#issue_start_date' ) );
     compare( 'Due date', fmtDate( getText( 'td.due-date' ) ), getVal( 'input#issue_due_date' ) );
@@ -182,6 +181,10 @@ $(function() {
     if ( $( 'select#issue_status_id' ).is( ":visible" ) ) {
       compare( 'Status', getText( 'table.attributes td.status' ), getSelect( 'select#issue_status_id' ) );
     };
+
+    const origTarget = getText( 'td.fixed-version' );
+    const target = origTarget.substr( origTarget.indexOf(' - ') + 3);
+    compare( 'Target version', target, getSelect( 'select#issue_fixed_version_id' ) );
 
     if( $div.children().length === 0 ){
       $div.append( `<p><em>No diff</em></p>` );
