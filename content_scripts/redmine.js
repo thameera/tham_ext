@@ -99,6 +99,19 @@ $(function() {
       });
     });
 
+    const changesetNotes = $('.changeset>p>a');
+
+    changesetNotes.each(function() {
+      const $this = $(this);
+      const rev = $this.text().split(' ')[1];
+      const previouslyFound = revisions.find(r => r.rev === rev);
+      if( previouslyFound ) return;
+      revisions.push({
+        rev,
+        link: $this.attr('href')
+      });
+    });
+
     return revisions;
   };
 
@@ -106,8 +119,12 @@ $(function() {
     const revs = getRevs();
     const $ul = $('<ul>');
     revs.forEach(r => {
-      const $li = $(`<li><a href="${r.link}">${r.rev}</a> (<a href="${r.noteLink}">${r.noteId}</a>)</li>`);
-      $ul.append($li);
+      let li = `<li><a href="${r.link}">${r.rev}</a>`;
+      if( r.noteLink ) {
+        li += ` (<a href="${r.noteLink}">${r.noteId}</a>)`;
+      }
+      li += `</li>`;
+      $ul.append($(li));
     });
 
     const $title = $('<h3>Revisions</h3>');
