@@ -1,6 +1,6 @@
 // UTM token stripper
 // Source: https://github.com/jparise/chrome-utm-stripper
-chrome.tabs.onUpdated.addListener(function( tabId, changeInfo, tab ) {
+var utmTokenStripper = function( tab ) {
   var queryStringIndex = tab.url.indexOf( '?' );
 
   if( tab.url.indexOf('buzzfeed.com') > -1 ) return;
@@ -17,6 +17,20 @@ chrome.tabs.onUpdated.addListener(function( tabId, changeInfo, tab ) {
       chrome.tabs.update( tab.id, {url: stripped} );
     }
   }
+};
+
+
+var redmineRedirect = function(tab) {
+  if( tab.url.indexOf('http://svn/') > -1 ) {
+    var redirect = tab.url.replace( 'http://svn', 'https://222.229.226.165' );
+    chrome.tabs.update( tab.id, { url: redirect } );
+  }
+};
+
+
+chrome.tabs.onUpdated.addListener(function( tabId, changeInfo, tab ) {
+  utmTokenStripper( tab );
+  redmineRedirect( tab );
 });
 
 
