@@ -135,7 +135,7 @@ $(function() {
   };
 
   // Left-pad two digits
-  const pad = (n) => ('0' + n).substr(-2);
+  const pad = (n) => String.prototype.padStart.call(n, 2, '0');
 
   const formatDate = (dateStr) => {
     const d = new Date(dateStr);
