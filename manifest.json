@@ -29,10 +29,6 @@
       "js": ["lib/jquery-2.1.4.min.js", "content_scripts/twitter.js"]
     },
     {
-      "matches": ["https://222.229.226.165/redmine/*"],
-      "js": ["lib/jquery-2.1.4.min.js", "content_scripts/redmine.js"]
-    },
-    {
       "matches": ["https://www.safaribooksonline.com/library/*"],
       "js": ["content_scripts/safaribooks.js"]
     }

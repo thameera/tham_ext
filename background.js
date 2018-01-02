@@ -20,17 +20,8 @@ var utmTokenStripper = function( tab ) {
 };
 
 
-var redmineRedirect = function(tab) {
-  if( tab.url.indexOf('http://svn/') > -1 ) {
-    var redirect = tab.url.replace( 'http://svn', 'https://222.229.226.165' );
-    chrome.tabs.update( tab.id, { url: redirect } );
-  }
-};
-
-
 chrome.tabs.onUpdated.addListener(function( tabId, changeInfo, tab ) {
   utmTokenStripper( tab );
-  redmineRedirect( tab );
 });
 
 
