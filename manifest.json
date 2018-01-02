@@ -27,7 +27,20 @@
     {
       "matches": ["https://twitter.com/*"],
       "js": ["lib/jquery-2.1.4.min.js", "content_scripts/twitter.js"]
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_scripts/all_page_scripts.js"]
     }
-  ]
+  ],
+  "commands": {
+    "copy-hovered-link": {
+      "suggested_key": {
+        "default": "Alt+V",
+        "mac": "Alt+V"
+      },
+      "description": "Copy hovered link address"
+    }
+  }
 }
 

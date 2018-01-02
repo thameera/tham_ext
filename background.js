@@ -110,3 +110,28 @@ var timer = (function() {
 
 })();
 
+
+const copyToClipboard = text => {
+  const input = document.createElement('input')
+  input.value = text
+  document.body.appendChild(input)
+  input.select()
+  document.execCommand('Copy')
+  document.body.removeChild(input)
+}
+
+let hoveredLink = ''
+
+chrome.runtime.onMessage.addListener(req => {
+  if( req.type === 'link-hover' ) {
+    hoveredLink = req.url
+  } else if( req.type === 'link-unhover' ) {
+    hoveredLink = ''
+  }
+})
+
+chrome.commands.onCommand.addListener(cmd => {
+  if( cmd === 'copy-hovered-link' ) {
+    copyToClipboard(hoveredLink)
+  }
+})
