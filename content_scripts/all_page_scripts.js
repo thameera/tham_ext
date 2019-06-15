@@ -11,4 +11,11 @@ window.onload = function() {
   }
   document.querySelectorAll('a').forEach(attachLinkHoverEvent)
 
+  /* Allow paste */
+  const allowPaste = e => {
+    e.stopImmediatePropagation();
+    return true;
+  };
+  document.addEventListener('paste', allowPaste, true);
+
 }
